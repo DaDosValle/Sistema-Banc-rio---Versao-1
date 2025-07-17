@@ -1,0 +1,136 @@
+menu = """
+Seja bem_vindo(a) ao maior banco do Olá, Mundo!
+
+Como podemos ajudar hoje? Escolha uma opção:
+
+[d] Depositar
+[s] Sacar
+[e] Extrato
+[a] Ajuda_Emprestimo
+[q] Sair
+
+=> """
+
+saldo = 0
+limite = 500
+limite_acumulado = 0
+extrato = ""
+numero_saques = 0
+valor_emprestimo = 0
+parcelas = 0
+total_juros_emprestimo = 0
+valor_parcela_com_juros = 0
+LIMITE_SAQUES = 3
+
+
+while True:
+
+    opcao = input(menu)
+
+    if opcao == "d":
+        valor = float(input("Informe o valor do depósito:"))
+
+        if valor > 0:
+            saldo += valor
+            extrato += f"Depósito: R$ {valor:.2f}\n"
+
+        else:
+            print("Operação falhou! O valor informado é inválido.")
+
+    elif opcao == "s":
+        valor = float(input("Informe o valor do saque: "))
+        
+        excedeu_saldo = valor > saldo
+        excedeu_limite = valor > limite
+        excedeu_saques = numero_saques >= LIMITE_SAQUES
+
+        if excedeu_saldo:
+            print("Operação falhou! Você não tem saldo suficiente.")
+
+        elif excedeu_limite:
+            print("Operação falhou! O valor do saque excede o limite.")
+
+        elif excedeu_saques:
+            print("Operação falhou! Número máximo de saques excedido.")
+
+        elif valor > 0:
+            saldo -= valor
+            extrato += f"Saque: R$ {valor:.2f}\n"
+            numero_saques += 1
+            limite_acumulado += valor
+            print("Saque realizado com sucessos. Tenha um excelente dia!")
+
+        else:
+            print("Falha! Operação não identificada.\n")
+            print("Tente novamente!")
+
+    elif opcao == "e":
+        print("\n================ EXTRATO ================")
+        print("Não foram realizadas movimentações." if not extrato else extrato)
+        print(f"\nSaldo: R$ {saldo:.2f}\n")
+        print(f"Valor do empréstimo solicitado: R$ {valor_emprestimo:.2f}" if not extrato else extrato)
+        print(f"Valor total a pagar (incluindo juros): R$ {valor_emprestimo + total_juros_emprestimo:.2f}")
+        print(f"Número de parcelas: {parcelas}")
+        print(f"Valor de cada parcela (com juros): R$ {valor_parcela_com_juros:.2f}" if not extrato else extrato)
+        print("==========================================")
+
+    elif opcao == "a":
+        emprestimo_aprovado = False
+        mensagem_negacao = "" 
+
+        valor_emprestimo = float(input("Quanto reais (R$) você precisa para o empréstimo? "))
+        
+        
+        if valor_emprestimo <= 0:
+            mensagem_negacao = "Operação de empréstimo falhou! O valor solicitado deve ser positivo."
+        elif limite_acumulado < 1500:
+             mensagem_negacao = f"Empréstimo não autorizado. Seu histórico de uso (limite acumulado: R${limite_acumulado:.2f}) ainda não atende aos requisitos mínimos (R$1500) para esta linha de crédito."
+        elif valor_emprestimo > (limite_acumulado * 2):
+            mensagem_negacao = "Empréstimo não autorizado. O valor solicitado excede a proporção permitida em relação ao seu limite acumulado."
+        elif saldo < valor_emprestimo * 0.10:
+            mensagem_negacao = "Empréstimo não autorizado. Saldo insuficiente para o valor solicitado. Mantenha um saldo mínimo."
+        else:
+        
+            emprestimo_aprovado = True
+    
+        if emprestimo_aprovado:
+            print("\nSeu empréstimo foi pré-aprovado! Agora, vamos definir as parcelas.")
+            
+            parcelas = 0 
+            try:
+                parcelas = int(input("De 1 até 12 parcelas. Quantas parcelas deseja para seu empréstimo? "))
+            except ValueError:
+                print("Entrada inválida para o número de parcelas. Por favor, digite um número inteiro.")
+                
+            
+        
+            if 0 < parcelas <= 12: 
+                calculo_emprestimo_base = valor_emprestimo / parcelas 
+
+                taxa_juros_percentual = 0.05
+                
+                valor_parcela_com_juros = calculo_emprestimo_base * (1 + taxa_juros_percentual)
+                valor_da_taxa_por_parcela = calculo_emprestimo_base * taxa_juros_percentual
+                total_juros_emprestimo = valor_da_taxa_por_parcela * parcelas
+                
+                print(f"\n--- Detalhamento do seu Empréstimo ---")
+                print(f"Valor do empréstimo solicitado: R$ {valor_emprestimo:.2f}")
+                print(f"Número de parcelas: {parcelas}")
+                print(f"Valor de cada parcela (com juros): R$ {valor_parcela_com_juros:.2f}")
+                print(f"Valor da taxa de juros por parcela: R$ {valor_da_taxa_por_parcela:.2f}")
+                print(f"Taxa percentual aplicada: {taxa_juros_percentual * 100:.0f}% ao mês")
+                print(f"Total de juros no empréstimo: R$ {total_juros_emprestimo:.2f}")
+                print(f"Valor total a pagar (incluindo juros): R$ {valor_emprestimo + total_juros_emprestimo:.2f}")
+                
+            else:
+                print("Número de parcelas inválido. Por favor, escolha um número de 1 a 12.")
+            
+        else: 
+            print(mensagem_negacao)
+            
+    elif opcao == "q":
+        print("Obrigado por utilizar nosso serviço. Tenha um excelente dia!.\n")
+        break
+
+    else:
+        print("Operação inválida, por favor selecione novamente a operação desejada.")
