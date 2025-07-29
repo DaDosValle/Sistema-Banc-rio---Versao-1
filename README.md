@@ -1,4 +1,4 @@
-# Sistema Bancário em Python Versão 
+# Sistema Bancário em Python Versão 2
 
 Este é um sistema bancário simples desenvolvido em Python que simula operações básicas como cadastro de usuários, abertura de contas, depósitos, saques, extratos e solicitação de empréstimos.
 
