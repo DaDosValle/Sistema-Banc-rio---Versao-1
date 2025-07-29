@@ -1,75 +1,156 @@
------
+# Sistema Bancário em Python Versão 
 
-# Sistema Bancário Simplificado em Python
+Este é um sistema bancário simples desenvolvido em Python que simula operações básicas como cadastro de usuários, abertura de contas, depósitos, saques, extratos e solicitação de empréstimos.
 
-Este é um sistema bancário básico, interativo e em sua primeira versão, desenvolvido em Python. Ele permite que o usuário realize operações financeiras simples e essenciais, incluindo solicitação de empréstimo.
+---
 
------
+## Sumário
+
+- [Sobre](#sobre)
+- [Funcionalidades](#funcionalidades)
+- [Como usar](#como-usar)
+- [Estrutura do Código](#estrutura-do-código)
+- [Variáveis e Constantes](#variáveis-e-constantes)
+- [Funções](#funções)
+- [Fluxo do Programa](#fluxo-do-programa)
+- [Considerações Finais](#considerações-finais)
+
+---
+
+## Sobre
+
+Este sistema tem como objetivo oferecer uma interface simples e interativa para simular operações bancárias cotidianas. O usuário pode cadastrar clientes, criar contas vinculadas a esses clientes, realizar depósitos, saques limitados, consultar extratos e solicitar empréstimos com regras básicas de aprovação.
+
+---
 
 ## Funcionalidades
 
-O sistema oferece um menu simples com as seguintes opções:
+- Cadastro de usuários com dados pessoais (nome, CPF, data de nascimento, endereço).
+- Criação de contas bancárias vinculadas aos usuários cadastrados.
+- Listagem de contas abertas.
+- Depósito em conta.
+- Saques com limites de valor, quantidade máxima diária e saldo disponível.
+- Visualização do extrato da conta, incluindo depósitos, saques e informações sobre empréstimos.
+- Solicitação de empréstimos com pré-aprovação baseada em critérios (histórico de saques, saldo e valor solicitado).
+- Cálculo detalhado do empréstimo com número de parcelas, juros mensais e valor final.
 
-  * **[d] Depositar**: Adicione dinheiro à sua conta.
-  * **[s] Sacar**: Retire dinheiro, respeitando limites diários e por transação.
-  * **[e] Extrato**: Visualize todas as suas movimentações e o saldo atual.
-  * **[a] Ajuda\_Emprestimo**: Simule um empréstimo, verificando sua elegibilidade e calculando as parcelas com juros.
-  * **[q] Sair**: Encerre o programa a qualquer momento.
+---
 
------
+## Como usar
 
-## Regras de Negócio e Limites do Sistema
+1. Execute o script Python.
+2. No menu principal, escolha uma opção digitando a letra correspondente:
+   - `u`: Cadastrar usuário
+   - `c`: Cadastrar conta
+   - `l`: Listar contas
+   - `d`: Depositar
+   - `s`: Sacar
+   - `e`: Extrato
+   - `a`: Ajuda para empréstimo
+   - `q`: Sair do sistema
+3. Siga as instruções apresentadas para cada operação.
+4. Ao finalizar, escolha a opção para sair ou retornar ao menu principal.
 
-O banco simplificado opera com algumas regras internas:
-
-  * **Depósito**: Apenas valores maiores que zero são aceitos.
-  * **Saque**:
-      * **Limite por saque**: Você só pode sacar até `R$ 500,00` por vez.
-      * **Limite diário**: Máximo de `3` saques por dia.
-      * Não é possível sacar mais do que o seu **saldo** atual.
-      * Constar no **extrato** todo saque realizado.
-      * Exibir os em valores monetários em decimais (R$ xxx.xx)
-   
-    -----
-
-## Minha Sugestão e Aplicado de Regras de Negócio
-     
-  * **Empréstimo**:
-      * O valor pedido deve ser **positivo**.
-      * **Elegibilidade**: Para simular um empréstimo, seu **`limite_acumulado`** (total de saques feitos) deve ser de, no mínimo, `R$ 1500,00`.
-      * O valor do empréstimo não pode ser mais do que o **dobro** do seu **`limite_acumulado`**.
-      * Você precisa ter um **saldo** equivalente a pelo menos **10%** do valor do empréstimo solicitado.
-      * Se aprovado, você pode escolher de `1` a `12` parcelas.
-      * A taxa de juros aplicada na simulação é de `5% ao mês`.
-      * O **`limite_acumulado`** registra o total que você já sacou (usado para regras de empréstimo).
-
-
------
+---
 
 ## Estrutura do Código
 
-O código é construído em um **loop principal (`while True`)** que exibe o menu e processa a escolha do usuário até que a opção de sair seja selecionada.
+O código está organizado com:
 
-  * **Variáveis Iniciais**: `saldo`, `limite`, `limite_acumulado`, `extrato`, `numero_saques` e `LIMITE_SAQUES` são definidas no início e controlam o estado do banco.
-  * **Controle de Fluxo**: As operações são gerenciadas por uma cadeia de `if`/`elif` com base na opção escolhida pelo usuário.
-  * **Seção de Empréstimo (`[a]`)**: Esta seção possui uma lógica mais complexa, usando uma **variável de status (`emprestimo_aprovado`)** para guiar o fluxo. Primeiro, são verificadas todas as condições de negação. Se nenhuma delas for verdadeira, o empréstimo é considerado "pré-aprovado", e então o sistema pede e valida o número de parcelas.
-  * **Tratamento de Erros**: O sistema usa blocos `try-except` para capturar entradas inválidas do usuário (como digitar texto onde se espera um número), prevenindo que o programa trave.
-  * **Formatação de Saída**: Utiliza **f-strings** com formatação `:.2f` para garantir que valores monetários sejam exibidos com duas casas decimais, de forma clara e profissional.
+- Variáveis globais para controle do saldo, limites, extrato e empréstimos.
+- Constantes para limites de saque e número da agência.
+- Listas para armazenar usuários e contas.
+- Funções específicas para cada funcionalidade (ex: criar usuário, depositar, sacar, etc).
+- Laço principal (`while True`) para exibir o menu e receber comandos do usuário.
 
------
+---
 
-## Melhorias Futuras
+## Variáveis e Constantes Principais
 
-Este é um ponto de partida\! Você pode expandir este sistema com as seguintes ideias:
+| Variável                | Descrição                                             |
+|------------------------|-------------------------------------------------------|
+| `saldo`                | Saldo atual da conta                                   |
+| `limite`               | Limite máximo permitido para saque                    |
+| `limite_acumulado`     | Total acumulado em saques para controle de empréstimos|
+| `extrato`              | String que guarda o histórico de transações           |
+| `numero_saques`        | Quantidade de saques realizados no dia                 |
+| `valor_emprestimo`     | Valor solicitado para empréstimo                        |
+| `parcelas`             | Número de parcelas para pagamento do empréstimo        |
+| `total_juros_emprestimo`| Juros totais calculados para o empréstimo             |
+| `valor_parcela_com_juros`| Valor de cada parcela incluindo juros                 |
+| `LIMITE_SAQUES`        | Constante para limite máximo diário de saques          |
+| `AGENCIA`              | Número fixo da agência bancária                         |
+| `usuarios`             | Lista contendo os usuários cadastrados                  |
+| `contas`               | Lista contendo as contas abertas                         |
 
-  * **Histórico de Empréstimos**: Adicionar informações de empréstimos concedidos ao extrato.
-  * **Funções**: Organizar o código em funções para cada operação (depósito, saque, extrato, empréstimo) para melhor legibilidade e manutenção.
-  * **Persistência de Dados**: Salvar os dados do `saldo`, `extrato` etc. em um arquivo para que as informações não se percam ao fechar o programa.
-  * **Novas Operações**: Adicionar funcionalidades como transferências, pagamento de contas, etc.
+---
 
------
+## Funções
 
+### `menu()`
 
-Sou novato nesse mundo da tecnologia então que tal conectar comigo no LinkdIn? [Clique Aqui](edin.com/in/fernando-m-do-valle-b653a7349/)
+Exibe o menu principal e retorna a opção escolhida pelo usuário.
 
-<img src="https://raw.githubusercontent.com/DaDosValle/Imagens/refs/heads/main/minha%20logomarca%20analista%20e%20devs.jpg" width="300">
+---
+
+### `depositar(saldo, valor, extrato)`
+
+Realiza um depósito no saldo, atualiza o extrato e retorna os novos valores.
+
+---
+
+### `saque(saldo, valor, extrato, limite, numero_saques, limite_saques, limite_acumulado)`
+
+Realiza um saque verificando se o valor solicitado não excede saldo, limite ou número máximo de saques. Atualiza o saldo, extrato, número de saques e limite acumulado.
+
+---
+
+### `extrato_movimentacao(saldo, extrato)`
+
+Exibe o extrato da conta, incluindo saldo atual e informações sobre empréstimos solicitados.
+
+---
+
+### `criar_usuario(usuarios)`
+
+Permite o cadastro de um novo usuário solicitando CPF, nome, data de nascimento e endereço. Verifica se o usuário já existe pelo CPF.
+
+---
+
+### `filtrar_usuario(cpf, usuarios)`
+
+Retorna o usuário correspondente ao CPF informado ou `None` caso não exista.
+
+---
+
+### `criar_conta(agencia, numero_conta, usuarios)`
+
+Cria uma nova conta vinculada a um usuário já cadastrado, solicitando o CPF para validação.
+
+---
+
+### `listar_contas(contas)`
+
+Lista todas as contas cadastradas com seus dados principais.
+
+---
+
+## Fluxo do Programa
+
+- Inicia o programa exibindo o menu principal.
+- Usuário escolhe a operação desejada.
+- De acordo com a operação, o programa chama a função correspondente.
+- Após a operação, oferece ao usuário a opção de voltar ao menu ou encerrar o programa.
+- O programa só termina quando o usuário escolhe sair (opção `q`).
+
+---
+
+## Considerações Finais
+
+Este projeto é uma base simples para o entendimento de operações bancárias em Python. Pode ser expandido com funcionalidades adicionais como autenticação, controle de múltiplas contas por usuário, persistência de dados, interface gráfica, entre outros.
+
+---
+
+Se desejar ajuda para evoluir o projeto ou adicionar funcionalidades, estou à disposição!
+
+[Fernando do Valle -LinkdIn](https://www.linkedin.com/in/fernando-m-do-valle)
