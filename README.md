@@ -1,3 +1,5 @@
+`A Versão atualizada está concentrada na branch VERSAO 2 deste repositório`
+
 -----
 
 # Sistema Bancário Simplificado em Python
